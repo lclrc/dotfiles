@@ -1,0 +1,205 @@
+"------------------------------------------------------------------------------
+" File:   $HOME/.vimperatorrc
+" Author: Petr Zemek <s3rvac@gmail.com>
+"------------------------------------------------------------------------------
+
+" Start always in the normal mode.
+normal <Esc>
+
+"------------------------------------------------------------------------------
+" Vimperator settings.
+"------------------------------------------------------------------------------
+
+" Use "Firefox" instead of the default "Vimperator" string in window titles.
+set titlestring=Firefox
+
+" Autocomplete with Firefox location bar entries (bookmarks and history sorted
+" in an intelligent way).
+set complete=l
+
+" Maximum number of items to show in listings.
+set maxitems=6
+
+" Use GVim as the external editor.
+set editor='gvim -f'
+
+" Try to stay in the normal mode (don't focus any input elements automatically
+" when opening pages).
+set focuscontent
+
+" Shown toolbars.
+set toolbars=tabs,navigation
+
+" Format of the status line.
+set status=input,location,bookmark
+
+" All type pages are opened in a new tab.
+" addons + downloads + help + javascript + prefs
+set newtab=all
+
+" Show numbers on each tab.
+set tabnumbers
+
+" Show the destination of the link under the cursor in the status bar.
+set showstatuslinks=3
+
+" Disable animations.
+set animations=false
+
+" Use Google as the default search/suggest engine.
+set defsearch=google
+set suggestengines=google
+
+" Do not use any URL separator (a comma and space by default). This makes e.g.
+" `:tabnew xxx, yyy` search for "xxx, yyy" in a single tab instead of opening
+" two tabs with "xxx" and "yyy".
+set urlseparator=
+
+" Perform incremental searching.
+set incsearch
+
+" Highlight search results.
+set hlsearch
+
+"" Typically (see below) ignore case.
+set ignorecase
+
+"" Only consider case if an upper case character is used.
+set smartcase
+
+"------------------------------------------------------------------------------
+" Styling.
+"------------------------------------------------------------------------------
+
+highlight InfoMsg color: darkgreen; background: white;
+highlight StatusLine color: black; background: transparent; font-eight: normal;
+
+"------------------------------------------------------------------------------
+" Commands.
+"------------------------------------------------------------------------------
+
+" Delete all user-defined commands to avoid troubles when loading .vimperatorrc
+" repeatedly.
+comclear
+
+"------------------------------------------------------------------------------
+" Key bindings.
+"------------------------------------------------------------------------------
+
+" Leader key to be used.
+let mapleader=';'
+
+" Clear all key mappings to avoid troubles when loading .vimperatorrc
+" repeatedly.
+mapclear
+cmapclear
+imapclear
+
+" Previous/next tab.
+nnoremap <S-j> :tabprevious<CR>
+nnoremap <S-k> :tabnext<CR>
+
+" Go to Nth tab.
+nnoremap <Leader>1 1gt
+nnoremap <Leader>2 2gt
+nnoremap <Leader>3 3gt
+nnoremap <Leader>4 4gt
+nnoremap <Leader>5 5gt
+nnoremap <Leader>6 6gt
+nnoremap <Leader>7 7gt
+nnoremap <Leader>8 8gt
+nnoremap <Leader>9 9gt
+nnoremap <Leader>0 10gt
+
+" Movement of tabs.
+noremap \< :tabmove! -1<CR>
+noremap \> :tabmove! +1<CR>
+
+" Backward/forward in history.
+nnoremap h :back<CR>
+nnoremap l :forward<CR>
+
+" Scroll three times faster.
+nnoremap j 3j
+nnoremap k 3k
+
+" Pass Ctrl-e to the "It's All Text" addon that I use (it is better than
+" Vimperator's Ctrl-i functionality).
+inoremap <C-e> <Insert><C-e><Insert>
+
+" Allow Ctrl-a to select all text.
+inoremap <C-a> <Insert><C-a><Insert>
+
+" Hitting Shift+Space will make the current search disappear.
+" (I wanted to map just Space to do it, but that does not work, see
+" https://github.com/vimperator/vimperator-labs/issues/10)
+nnoremap <S-Space> :nohlsearch<CR>
+
+" Reload this configuration file.
+noremap <Leader><S-r> :source ~/.vimperatorrc<CR>:echo "Configuration reloaded."<CR>
+
+" Open a URL in a background tab.
+" It behaves like the standard t/T, only adds ! after 'tabopen', thus making
+" the tab open in the background.
+" Can we implement these mappings in a simpler way?
+nnoremap <Leader>t :tabopen! <End>
+nnoremap <Leader><S-t> T<Home><Right><Right><Right><Right><Right><Right><Right>!<End>
+
+"------------------------------------------------------------------------------
+" Firefox settings.
+"------------------------------------------------------------------------------
+
+" Use liberator://help/intro as the startup page to prevent Firefox starting in
+" the insert mode. This workaround is based on
+" https://github.com/vimperator/vimperator-labs/issues/88
+set! browser.startup.homepage=liberator://help/intro
+
+" Do not shorten URLs (protocol and trailing slash).
+set! browser.urlbar.trimURLs=false
+
+" When creating a new tab, show an empty page in it.
+set! browser.newtab.url=about:blank
+
+" Always show the tab bar.
+set! browser.tabs.autoHide=false
+
+" Do not animate the tab bar when switching to fullscreen.
+set! browser.fullscreen.animateUp=0
+
+" Do not close the window when the last tab is closed.
+set! browser.tabs.closeWindowWithLastTab=false
+
+" Do not show the 'Recently bookmarked' section in bookmarks.
+set! browser.bookmarks.showRecentlyBookmarked=false
+
+" Do not check if Firefox is the default browser.
+set! browser.shell.checkDefaultBrowser=false
+
+" Disable warnings.
+set! browser.tabs.warnOnClose=false
+set! browser.tabs.warnOnCloseOtherTabs=false
+set! browser.tabs.warnOnOpen=false
+set! general.warnOnAboutConfig=false
+
+" Do not select trailing spaces when selecting words.
+set! layout.word_select.eat_space_to_next_word=false
+
+" Enable pipelining to speed things up.
+set! network.http.pipelining=true
+set! network.http.pipelining.maxrequests=16
+set! network.http.max-connections=16
+set! network.http.max-connections-per-server=16
+
+" What to clear after shutdown?
+set! privacy.clearOnShutdown.cache=false
+set! privacy.clearOnShutdown.cookies=false
+set! privacy.clearOnShutdown.downloads=true
+set! privacy.clearOnShutdown.formdata=false
+set! privacy.clearOnShutdown.history=false
+set! privacy.clearOnShutdown.offlineApps=true
+set! privacy.clearOnShutdown.passwords=false
+set! privacy.clearOnShutdown.sessions=false
+set! privacy.clearOnShutdown.siteSettings=false
+
+" Do not wait before installing extensions.
+set! security.dialog_enable_delay=0
