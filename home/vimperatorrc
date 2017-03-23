@@ -1,65 +1,140 @@
-"------------------------------------------------------------------------------
-" File:   $HOME/.vimperatorrc
-" Author: Petr Zemek <s3rvac@gmail.com>
-"------------------------------------------------------------------------------
+set runtimepath=~/.vimperator
+"Smart Completions not work on Fx49
+js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
 
-" Start always in the normal mode.
-normal <Esc>
+"=================================================
+" 插件
+"=================================================
 
-"------------------------------------------------------------------------------
-" Vimperator settings.
-"------------------------------------------------------------------------------
+"加载插件
+" lpl
+source ~/.vimperator/vimppm/plugin/vimppm.js
 
-" Use "Firefox" instead of the default "Vimperator" string in window titles.
-set titlestring=Firefox
+" Github Repository
+" vimppm 'cd01/evernote-clearly-vimp' '{"attr": "value", "hoge": "hogehoge"}'
+vimppm 'cd01/suddendeath-vimp'
+vimppm 'oskarkook/vimperator-pocket'
+vimppm 's2marine/vimperator-buftabs'
+vimppm 'naoty/cputil-vimp'
 
-" Autocomplete with Firefox location bar entries (bookmarks and history sorted
-" in an intelligent way).
-set complete=l
+" Vimpr
+vimppm '_libly.js'
+vimppm 'auto-proxy.js'
+vimppm 'mute.js'
+vimppm 'relative_move.js'
+vimppm 'removetabs.js'
+vimppm 'tab-history.js'
+vimppm 'stella.js'
+vimppm 'walk-input.js'
+vimppm 'yetmappings.js'
+vimppm 'copy.js'
+vimppm 'caret-hint.js'
+vimppm 'commandBookmarklet.js'
+vimppm 'feedSomeKeys_3.js'
+vimppm 'gmail-commando.js'
+vimppm 'goo.gl.js'
+vimppm 'imageextender.js'
+vimppm 'PDF.js.js'
+vimppm 'sbmcommentsviewer.js'
+vimppm 'slideshare.js'
+vimppm 'statstat.js'
+vimppm 'smooth-scroll.js'
+vimppm 'tabmixplus.js'
+" vimppm 'chinese-hints.js'
+" vimppm 'gmail.js'
+" vimppm 'buftabs.js'
+" vimppm 'ime_controller.js'
+" vimppm '_smooziee.js'
+" vimppm 'readability.js'
+" vimppm 'statusline-toolbar.js'
+" vimppm 'stylish.js'
+" vimppm 'erection.js'
+" vimppm 'google-tasks.js'
+" vimppm 'hints-for-embedded.js'
+" vimppm 'history-search-backward.js'
+" vimppm 'httpstatus.js'
+" vimppm 'pypi.js'
+" vimppm 'QB.js'
+" vimppm 'appendAnchor.js'
+" vimppm 'alert.js'
+" vimppm 'tabsort.js'
 
-" Maximum number of items to show in listings.
-set maxitems=6
+" Leader key to be used.
+let mapleader=','
 
-" Use GVim as the external editor.
-set editor='gvim -f'
+"chinese-hints
+" set hintmatching=custom
+set hintchars='hjklasdfgyuiopqwertnmzxcvb'
 
-" Try to stay in the normal mode (don't focus any input elements automatically
-" when opening pages).
-set focuscontent
+"SwitchPac
+" set status=input,location,bookmark,history,tabcount,position,zoomlevel,SwitchPac,ssl
+set status=input,history,bookmark,location,tabcount,ssl,position
+" nmap xe :ep<CR>
+" nmap xr :rp<CR>
 
-" Shown toolbars.
-set toolbars=tabs,navigation
+"Change the current directory
+" silent cd ~/.vimperator/plugin
 
-" Format of the status line.
-set status=input,location,bookmark
+"=================================================
+" 界面
+"=================================================
 
-" All type pages are opened in a new tab.
-" addons + downloads + help + javascript + prefs
-set newtab=all
+" 设置标题名
+set titlestring='Mozilla Firefox'
+" set titlestring=''
 
-" Show numbers on each tab.
+"ColorScheme
+" colorscheme vimpwhite
+colorscheme solarized_light
+
+"隐藏导航栏
+" set gui=nonavigation,notabs
+set gui=none
+set noscrollbars
+
+"Tab Number
 set tabnumbers
 
-" Show the destination of the link under the cursor in the status bar.
-set showstatuslinks=3
+"显示链接地址
+set ssli=3
 
-" Disable animations.
-set animations=false
+"自动补全
+set maxitems=15
 
-" Use Google as the default search/suggest engine.
-set defsearch=google
-set suggestengines=google
+" highlight InfoMsg color: darkgreen; background: white;
+" highlight StatusLine color: black; background: transparent; font-eight: normal;
 
-" Do not use any URL separator (a comma and space by default). This makes e.g.
-" `:tabnew xxx, yyy` search for "xxx, yyy" in a single tab instead of opening
-" two tabs with "xxx" and "yyy".
-set urlseparator=
+"状态栏
+" set status+=zoomlevel,ssl
 
-" Perform incremental searching.
-set incsearch
+"切换导航栏
+nmap <F9> :set gui=invnavigation<CR>
 
-" Highlight search results.
-set hlsearch
+nmap <S-Esc> :js window.minimize()<CR>
+
+"=================================================
+" 设置
+"=================================================
+
+"新标签页打开
+set newtab=all
+
+"弹窗
+" set popups=resized
+" set popups=tab
+
+"Vim
+set editor='gvim -f'
+
+"翻页
+set nextpattern^="^[下后]一?[页頁张篇章个节步]"
+set nextpattern^="^Older"
+set previouspattern^="^[上前]一?[页頁张篇章个节步]"
+set previouspattern^="^Newer"
+
+"=================================================
+" 搜索
+"=================================================
 
 "" Typically (see below) ignore case.
 set ignorecase
@@ -67,37 +142,69 @@ set ignorecase
 "" Only consider case if an upper case character is used.
 set smartcase
 
-"------------------------------------------------------------------------------
-" Styling.
-"------------------------------------------------------------------------------
+" Hitting <leader>/ will make the current search disappear.
+" https://github.com/vimperator/vimperator-labs/issues/10)
+nnoremap <leader>/ :nohlsearch<CR>
 
-highlight InfoMsg color: darkgreen; background: white;
-highlight StatusLine color: black; background: transparent; font-eight: normal;
+"搜索建议
+set cpt+=S
 
-"------------------------------------------------------------------------------
-" Commands.
-"------------------------------------------------------------------------------
+"搜索引擎
+" set suggestengines=google
 
-" Delete all user-defined commands to avoid troubles when loading .vimperatorrc
-" repeatedly.
-comclear
+"Google
+nmap s tgoogle<Space>
 
-"------------------------------------------------------------------------------
-" Key bindings.
-"------------------------------------------------------------------------------
+"搜索所选内容
+command! -nargs=? -complete=search -description="Search selected text or the current clipboard contents" ss exe "t" + " <args> " + (content.window.getSelection() != "" ? content.window.getSelection() : util.readFromClipboard())
+map S <C-c>:ss<Space>
 
-" Leader key to be used.
-let mapleader=';'
+" nnoremap <silent> f :silent !fcitx-remote -c<CR>f
+" nnoremap <silent> F :silent !fcitx-remote -c<CR>F
+" nnoremap <silent> : :silent !fcitx-remote -c<CR>:
+" nnoremap <silent> b :silent !fcitx-remote -c<CR>b
+" nnoremap <silent> t :silent !fcitx-remote -c<CR>t
+" nnoremap <silent> T :silent !fcitx-remote -c<CR>T
+" nnoremap <silent> s :silent !fcitx-remote -c<CR>s
+" nnoremap <silent> S :silent !fcitx-remote -c<CR>S
+" nnoremap <silent> o :silent !fcitx-remote -c<CR>o
+" nnoremap <silent> O :silent !fcitx-remote -c<CR>O
 
-" Clear all key mappings to avoid troubles when loading .vimperatorrc
-" repeatedly.
-mapclear
-cmapclear
-imapclear
+" style -name commandline-ime chrome://* #dactyl-commandline-command input {ime-mode: inactive;}
 
-" Previous/next tab.
-nnoremap <S-j> :tabprevious<CR>
-nnoremap <S-k> :tabnext<CR>
+"=================================================
+" 命令
+"=================================================
+
+" Chrome
+command! chrome -description="Open with Chrome" -nargs=? js io.run("chromium-browser", <q-args> != "" ? [<q-args>] : [buffer.URL]);
+
+"=================================================
+" 映射
+"=================================================
+
+"窗口
+nmap ZR :restart<CR>
+nmap <S-Esc> :js window.minimize()<CR>
+nmap <C-z> <Insert>
+
+"滚动
+noremap j <Down>
+noremap k <Up>
+" noremap J <C-d>
+" noremap K <C-u>
+
+"Fix scroll
+nmap e :js buffer.focusElement(Buffer.findScrollableWindow().document.documentElement); liberator.echomsg("Let me scroll!");<CR>
+
+"标签
+nmap h gT
+nmap l gt
+" nmap H :tabm -1<CR>
+" nmap L :tabm +1<CR>
+nmap C :stop<CR>
+
+" Movement of tabs.
 
 " Go to Nth tab.
 nnoremap <Leader>1 1gt
@@ -110,40 +217,107 @@ nnoremap <Leader>7 7gt
 nnoremap <Leader>8 8gt
 nnoremap <Leader>9 9gt
 nnoremap <Leader>0 10gt
+noremap <leader>< :tabmove! -1<CR>
+noremap <leader>> :tabmove! +1<CR>
 
-" Movement of tabs.
-noremap \< :tabmove! -1<CR>
-noremap \> :tabmove! +1<CR>
-
-" Backward/forward in history.
-nnoremap h :back<CR>
-nnoremap l :forward<CR>
-
-" Scroll three times faster.
-nnoremap j 3j
-nnoremap k 3k
-
-" Pass Ctrl-e to the "It's All Text" addon that I use (it is better than
-" Vimperator's Ctrl-i functionality).
-inoremap <C-e> <Insert><C-e><Insert>
-
-" Allow Ctrl-a to select all text.
-inoremap <C-a> <Insert><C-a><Insert>
-
-" Hitting Shift+Space will make the current search disappear.
-" (I wanted to map just Space to do it, but that does not work, see
-" https://github.com/vimperator/vimperator-labs/issues/10)
-nnoremap <S-Space> :nohlsearch<CR>
-
-" Reload this configuration file.
-noremap <Leader><S-r> :source ~/.vimperatorrc<CR>:echo "Configuration reloaded."<CR>
+noremap p P
+noremap P p
+nmap <C-S-p> :set apptab!<CR>
 
 " Open a URL in a background tab.
 " It behaves like the standard t/T, only adds ! after 'tabopen', thus making
 " the tab open in the background.
-" Can we implement these mappings in a simpler way?
 nnoremap <Leader>t :tabopen! <End>
 nnoremap <Leader><S-t> T<Home><Right><Right><Right><Right><Right><Right><Right>!<End>
+
+"移除左/右侧紧邻标签页
+nmap w :js var tab = tabs.getTab(); if(tab.previousSibling) tabs.remove(tab.previousSibling);<CR>
+nmap W :js var tab = tabs.getTab(); if(tab.nextSibling) tabs.remove(tab.nextSibling);<CR>
+" nmap d :js tabs.remove(tabs.getTab());<CR>
+
+"历史
+nmap U :u<Space>
+nmap <A-d> :hs<CR>
+
+"复制粘贴
+imap <C-a> <C-Home><C-S-End>
+cmap <C-a> <C-Home><C-S-End>
+noremap <C-a> i<C-a>
+map y <C-c>
+noremap Y y
+noremap gi gi<C-e>
+
+"输入模式
+" inoremap <C-9> <C-a>
+" inoremap <C-0> <C-e>
+" cnoremap <C-9> <C-a>
+" cnoremap <C-0> <C-e>
+imap <C-n> <Down>
+imap <C-p> <Up>
+cmap <C-n> <Down>
+cmap <C-p> <Up>
+inoremap <C-h> <BS>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <A-b> <C-Left>
+inoremap <A-f> <C-Right>
+
+"其它
+nmap <C-Tab> i<C-Tab>
+noremap <C-d> i<C-d>
+noremap <C-u> i<C-u>
+noremap <C-g> g<C-g>
+noremap g<C-g> <C-g>
+
+"配置文件
+"nmap <C-A-e> :js editor.editFileExternally("D:/Firefox/Vimperator/_vimperatorrc");<CR>
+" js mappings.addUserMap([modes.NORMAL], ["<C-A-e>"], "", function() { editor.editFileExternally("D:/Firefox/vimperator/_vimperatorrc"); })
+
+" Reload this configuration file.
+" nmap <C-A-r> :js io.source("D:/Firefox/vimperator/_vimperatorrc"); liberator.echomsg("_vimperatorrc has been loaded");<CR>
+noremap <Leader><S-r> :source ~/.vimperatorrc<CR>:loadplugins<CR>:echo "Configuration and plugins reloaded."<CR>
+
+"=================================================
+" 网站
+"=================================================
+
+" Try to stay in the normal mode (don't focus any input elements automatically
+" when opening pages).
+set focuscontent
+
+"Pass Through
+set passthrough
+
+"pdf.js
+" nmap -u=\.pdf$ e :js content.document.getElementById("viewerContainer").focus();<CR>
+nnoremap -urls ^\\.pdf$ i :<C-u>pdfjs index<Space>
+nnoremap -urls ^\\.pdf$ z :<C-u>pdfjs zoom<Space>
+
+"about:config
+" nmap -u=^about:config$ gi :js content.document.getElementById("textbox").focus();<CR>
+
+" Stella设置
+nnoremap -urls=www.nicovideo.jp/watch/|youtube.com|bilibili.com <leader><leader> :stplay<cr>
+nnoremap -urls=www.nicovideo.jp/watch/|youtube.com|bilibili.com <leader><space> :stfull<cr>
+" nnoremap -urls=www|bangumi.bilibili.com/video/ <leader>c :stcomment<cr>
+" ['<C-g>', ':pageinfo S',      ],
+" ['p',     ':stplay',          ],
+" ['m',     ':stmute',          ],
+" ['c',     ':stcomment',       ],
+" ['zz',    ':stlarge',         ],
+" ['r',     ':strepeat',        ],
+" ['+',     ':stvolume! 10',    ],
+" ['-',     ':stvolume! -10',   ],
+" ['h',     ':stseek! -10',     ],
+" ['l',     ':stseek! 10',      ],
+" ['k',     ':stvolume! 10',    ],
+" ['j',     ':stvolume! -10',   ],
+" ['s',     ':stseek ',         {open: true}],
+" ['S',     ':stseek! ',        {open: true}],
+" ['v',     ':stvolume ',       {open: true}],
+" ['V',     ':stvolume! ',      {open: true}],
+" ['o',     ':strelations ',    {open: true}],
+" ['O',     ':strelations! ',   {open: true}],
 
 "------------------------------------------------------------------------------
 " Firefox settings.
@@ -161,7 +335,7 @@ set! browser.urlbar.trimURLs=false
 set! browser.newtab.url=about:blank
 
 " Always show the tab bar.
-set! browser.tabs.autoHide=false
+" set! browser.tabs.autoHide=false
 
 " Do not animate the tab bar when switching to fullscreen.
 set! browser.fullscreen.animateUp=0
@@ -203,3 +377,5 @@ set! privacy.clearOnShutdown.siteSettings=false
 
 " Do not wait before installing extensions.
 set! security.dialog_enable_delay=0
+
+"vim: ft=vimperator

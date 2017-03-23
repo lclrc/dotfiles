@@ -7,6 +7,8 @@ else
     let g:isGUI = 0
 endif
 
+" 关闭兼容模式
+set nocompatible
 " 定义快捷键的前缀，即 <Leader>
 let mapleader=","
 let maplocalleader = ";"
@@ -15,22 +17,20 @@ noremap \ ,
 " {{{ 插件安装
     if !exists('g:bundle_groups')
         " let g:bundle_groups=['python', 'javascript', 'markdown', 'html', 'css', 'tmux', 'beta', 'json', 'nginx', 'golang', 'ruby', 'less', 'php', 'coffeescript']
-        let g:bundle_groups=['python', 'javascript', 'markdown', 'html', 'css', 'tmux', 'beta']
+        let g:bundle_groups=['python', 'markdown', 'css', 'tmux', 'beta']
     endif
 
     filetype off
     call plug#begin('~/.vim/bundle')
     " 移动光标到插件名上, 使用'#'跳转到每个插件的配置处
 
-    " syntastic
-    " Plug 'scrooloose/syntastic'
     " 代码片段
     Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
     " auto complete
     if 1
         let g:plug_timeout=1000
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+        " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
         Plug 'vim-scripts/a.vim'
     else
         Plug 'Rip-Rip/clang_complete'
@@ -40,6 +40,7 @@ noremap \ ,
         Plug 'Shougo/neosnippet-snippets'
         Plug 'Shougo/neoinclude.vim'
         " Plug 'Shougo/neopairs.vim'
+        " Plug 'scrooloose/syntastic'
     endif
 
     Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -58,13 +59,17 @@ noremap \ ,
     " for repeat -> enhance surround.vim, . to repeat command
     Plug 'tpope/vim-surround' | Plug 'tpope/vim-repeat'
     " 快速赋值语句对齐
-    Plug 'junegunn/vim-easy-align'
+    Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 
     "更高效的移动 [,, + w/fx/h/j/k/l]
     Plug 'Lokaltog/vim-easymotion'
+    " Plug 'justinmk/vim-sneak'
+    " Plug 'maxbrunsfeld/vim-yankstack'
 
     " 更高效的行内移动, f/F/t/T, 才触发
-    Plug 'unblevable/quick-scope'
+    " Plug 'unblevable/quick-scope'
+    Plug 'patrickdepinguin/quick-scope'
+    " Plug 'kepbod/quick-scope'
 
     Plug 'vim-scripts/matchit.zip'
     " signature
@@ -103,36 +108,36 @@ noremap \ ,
 
     " quick run
     " quickrun
-    Plug 'thinca/vim-quickrun'
+    " Plug 'thinca/vim-quickrun'
 
     " git
     " fugitive
     Plug 'tpope/vim-fugitive'
     " gitgutter
     Plug 'airblade/vim-gitgutter'
+    " Plug 'junegunn/vim-github-dashboard'
 
     " gundo
     " edit history, 可以查看回到某个历史状态
-    Plug 'sjl/gundo.vim'
+    Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 
     " view
-    " airline
     " 状态栏增强展示
     Plug 'vim-airline/vim-airline' | Plug 'skywind3000/asyncrun.vim'
     Plug 'vim-airline/vim-airline-themes'
-    " rainbow_parentheses
     " 括号显示增强
-    Plug 'kien/rainbow_parentheses.vim'
+    " Plug 'kien/rainbow_parentheses.vim'
     " 主题 solarized
-    " solarized
-    Plug 'altercation/vim-colors-solarized'
-    " molokai
+    " Plug 'altercation/vim-colors-solarized'
     " 主题 molokai
     Plug 'tomasr/molokai'
 
     " nav
     " nerdtree nerdtreetabs
-    Plug 'scrooloose/nerdtree' | Plug 'jistr/vim-nerdtree-tabs' | Plug 'ivalkeen/nerdtree-execute' | Plug 'Xuyuanp/nerdtree-git-plugin' " 可以显示文件的Git增删状态
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeMirrorToggle' }
+    Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeMirrorToggle' }
+    Plug 'ivalkeen/nerdtree-execute', { 'on': 'NERDTreeMirrorToggle' }
+    Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeMirrorToggle' }
     " ctrlspace
     Plug 'vim-ctrlspace/vim-ctrlspace'
     " tagbar
@@ -142,32 +147,40 @@ noremap \ ,
     " 支持自定义文本对象
     Plug 'kana/vim-textobj-user'
     " 增加行文本对象: l   dal yal cil
-    Plug 'kana/vim-textobj-line'
+    " Plug 'kana/vim-textobj-line'
     " 增加文件文本对象: e   dae yae cie
-    Plug 'kana/vim-textobj-entire'
+    " Plug 'kana/vim-textobj-entire'
     " 增加缩进文本对象: i   dai yai cii - 相同缩进属于同一块
     Plug 'kana/vim-textobj-indent'
     " 函数对象，支持的语言有c java vimscript, if, af
     Plug 'kana/vim-textobj-function'
     " 函数参数对象i, i2, a,
-    Plug 'sgur/vim-textobj-parameter'
+    " Plug 'sgur/vim-textobj-parameter'
     " (), {}, [], <>, '', \"\", ``等等都可以用一个键操作ij, aj
     Plug 'Vesion/vim-textobj-surrounding'
+    Plug 'wellle/targets.vim'
 
     " vim内嵌输入法
     " Plug 'chrisniael/VimIM'
     " Plug 'vimim/vimim'
-    Plug 'lclrc/bx_vimim_dict'
+    " Plug 'lclrc/bx_vimim_dict'
     " 根据vim状态自动切换fcitx开关状态
-    " Plug 'lilydjwg/fcitx.vim'
+    Plug 'lilydjwg/fcitx.vim'
 
-    Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'vimwiki/vimwiki' | Plug 'itchyny/calendar.vim'
+    " 代码阅读
+    " Plug 'wesleyche/SrcExpl'
+    Plug 'octol/vim-cpp-enhanced-highlight'
 
     Plug 'vim-scripts/indexer.tar.gz' | Plug 'vim-scripts/DfrankUtil' | Plug 'vim-scripts/vimprj'
+    " Plug 'brookhong/cscope.vim'
+    " Plug 'ludovicchabant/vim-gutentags'
+    " Plug 'xolox/vim-easytags' | Plug 'xolox/vim-misc'
+    " Plug 'jsfaint/gen_tags.vim'
     " 实现.h内函数定义 需要fswitch
     Plug 'derekwyatt/vim-fswitch' | Plug 'derekwyatt/vim-protodef'
     " 提示函数原型
+    " Plug 'mbbill/echofunc', {'for': 'c'}
     Plug 'mbbill/echofunc'
     " 智能选中surround内内容
     Plug 'gcmt/wildfire.vim'
@@ -177,6 +190,7 @@ noremap \ ,
     Plug 'airblade/vim-rooter'
     " vim中文文档
     Plug 'asins/vimcdoc'
+    Plug 'vimperator/vimperator.vim'
 
     " 格式化代码
     Plug 'rhysd/vim-clang-format'
@@ -184,17 +198,20 @@ noremap \ ,
     Plug 'dkasak/manpageview'
     " focus on content
     Plug 'junegunn/limelight.vim'
-    Plug 'junegunn/goyo.vim'
+    Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
     " 生成函数说明
     Plug 'DoxygenToolkit.vim'
     Plug 'mhinz/vim-hugefile'
     " 画文本图
     Plug 'vim-scripts/DrawIt'
+    " 编辑远程文件
+    " Plug 'eshion/vim-sync'
 
     if count(g:bundle_groups, 'tmux')
         " tmux
         " For tmux navigator Ctrl-hjkl
         Plug 'christoomey/vim-tmux-navigator'
+        Plug 'tmux-plugins/vim-tmux-focus-events'
         " 修正tmux中vim背景色错误
         if exists('$TMUX')
           set term=screen-256color
@@ -213,6 +230,11 @@ noremap \ ,
         " map <F12> :InstantMarkdownPreview<CR>
     endif
 
+    if count(g:bundle_groups, 'java')
+        Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
+        autocmd FileType java setlocal omnifunc=javacomplete#Complete
+    endif
+
     if count(g:bundle_groups, 'golang')
         " 1. vim a.go
         " 2. :GoInstallBinaries
@@ -221,15 +243,16 @@ noremap \ ,
     endif
 
     if count(g:bundle_groups, 'python')
+        Plug 'python-mode/python-mode'
         " for python.vim syntax highlight
         " pythonsyntax
-        Plug 'hdima/python-syntax'
-        Plug 'hynek/vim-python-pep8-indent'
-        Plug 'Glench/Vim-Jinja2-Syntax'
+        " Plug 'hdima/python-syntax'
+        " Plug 'hynek/vim-python-pep8-indent'
+        " Plug 'Glench/Vim-Jinja2-Syntax'
         " 支持python里的函数和类
-        Plug 'bps/vim-textobj-python'
+        " Plug 'bps/vim-textobj-python'
         " 查看pythondoc
-        Plug 'fs111/pydoc.vim'
+        " Plug 'fs111/pydoc.vim'
     endif
 
     if count(g:bundle_groups, 'php')
@@ -297,15 +320,7 @@ noremap \ ,
 
     " this is just for beta version
     if count(g:bundle_groups, 'beta')
-        " " indent
-        " Plug 'nathanaelkane/vim-indent-guides'
-        " " <leader>ig to trigger
-        " let g:indent_guides_start_level = 2
-        " let g:indent_guides_guide_size = 1
-        " let g:indent_guides_auto_colors = 0
-        " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
-        " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=black
-
+        Plug 'vim-scripts/TaskList.vim'
         Plug 'Yggdroot/indentLine'
         " 快捷键 i 开/关缩进可视化
         let g:indentLine_char = '┊'
@@ -316,17 +331,8 @@ noremap \ ,
 " }}}
 filetype plugin indent on
 
-" Plug 'vim-scripts/TaskList.vim'
 " Plug 'bbchung/clighter8' "bug fixed in clighter8, C/C++高亮加强
-" #################################################################
-" Plug 'tdcdev/ycm_simple_conf'
-" #################################################################
-" Plug 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
-" Plug 'vim-utils/vim-man'
 " Plug 'Shougo/unite.vim'
-" Plug 'davidhalter/jedi-vim'
-" Plug 'xuhdev/SingleCompile'
-" Plug 'bronson/vim-trailing-whitespace'
 
 " base set {{{
     " 配色方案
@@ -346,7 +352,6 @@ filetype plugin indent on
 
     " 将工作目录设为当前文件目录
     " autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
-    let g:rooter_change_directory_for_non_project_files = 'current'
 
     " 设置打开文件位置为上次关闭位置
     if has("autocmd")
@@ -357,8 +362,8 @@ filetype plugin indent on
 
 " vim 自身（非插件）快捷键 {{{
     " 定义快捷键到行首和行尾
-    nmap H ^
-    nmap L $
+    nnoremap H ^
+    nnoremap L $
     vnoremap H ^
     vnoremap L $
     " Treat long lines as break lines (useful when moving around in them)
@@ -370,20 +375,39 @@ filetype plugin indent on
     " 模拟 Emacs 键绑定
     inoremap <C-a> <Home>
     inoremap <C-e> <End>
+    cnoremap <C-a> <Home>
+    cnoremap <C-e> <End>
+    cnoremap <C-b> <Left>
+    cnoremap <C-f> <Right>
     " inoremap <C-b> <Left>
     inoremap <C-f> <Right>
     inoremap <C-d> <DEL>
 
+    let g:highlighting = 0
+    function! Highlighting()
+        if g:highlighting == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
+            let g:highlighting = 0
+            return ":silent nohlsearch\<CR>"
+        endif
+        let @/ = '\<'.expand('<cword>').'\>'
+        let g:highlighting = 1
+        return ":silent set hlsearch\<CR>"
+    endfunction
+    nnoremap <silent> <expr> <CR> Highlighting()
+    " vnoremap <silent> <expr> <CR> Highlighting()
+
     " destroy arrow
     map <Left> <Nop>
     map <Right> <Nop>
-    " map <Up> <Nop>
-    " map <Down> <Nop>
+    " map h <Nop>
+    " map l <Nop>
 
     " 忘记sudo时，强制保存
     cmap w!! %!sudo tee > /dev/null %
     " 设置快捷键将选中文本块复制至系统剪贴板
     vnoremap <Leader>y "+y
+    " y$ -> Y Make Y behave like other capitals
+    map Y y$
     " 设置快捷键将系统剪贴板内容粘贴至vim
     nmap <Leader>p "+p
     " 定义快捷键保存所有窗口内容并退出 vim
@@ -405,12 +429,42 @@ filetype plugin indent on
     " 反向遍历同名标签
     nmap <Leader>tp :tprevious<CR>
 
+    " Toggles between the active and last active tab "
+    " The first tab is always 1 "
+    let g:last_active_tab = 1
+    " nnoremap <leader>gt :execute 'tabnext ' . g:last_active_tab<cr>
+    " nnoremap <silent> <c-o> :execute 'tabnext ' . g:last_active_tab<cr>
+    " vnoremap <silent> <c-o> :execute 'tabnext ' . g:last_active_tab<cr>
+    nnoremap <silent> <leader>tt :execute 'tabnext ' . g:last_active_tab<cr>
+    autocmd TabLeave * let g:last_active_tab = tabpagenr()
+
     " 单词全部改大写或首字母大写
     inoremap <Leader>U <Esc>gUiwea
     vnoremap <Leader>U <Esc>gUiwe
     inoremap <Leader>uu <Esc>bvUea
     vnoremap <Leader>uu <Esc>bvUe
+
+    " 去除\r\n中的\r, 即
+    nnoremap <Leader>dm :%s/<C-v><C-m>//g<CR>
 " }}}
+
+" usrDefinedFunc {
+    " [paste in target wellle/targets.vim](https://github.com/wellle/targets.vim/issues/159)
+    function! TargetPaste(type, ...)
+        let savedRegister = &l:clipboard =~? 'unnamed' ? @* : @"
+        if a:type == 'line'
+            normal! `[V`]p
+        else
+            normal! `[v`]p
+        endif
+        if &l:clipboard =~? 'unnamed'
+            let @* = savedRegister
+        else
+            let @" = savedRegister
+        endif
+    endfunction
+    nnoremap <silent><leader>v :set opfunc=TargetPaste<CR>g@
+" }
 
 " 其他 {{{
     " 解决esc延迟
@@ -425,24 +479,41 @@ filetype plugin indent on
     noremap <silent><leader>/ :nohls<CR>
     " 解决打开windows文件乱码问题
     set encoding=utf-8
-    set fileencodings=ucs-bom,utf-8,cp936,gbk,big5,latin1
-    " 关闭兼容模式
-    set nocompatible
+    set fileencodings=ucs-bom,utf-8,cp936,gb18030,gbk,big5,euc-jp,euc-kr,latin1
+    set helplang=cn
+    " Use Unix as the standard file type
+    set fileformats=unix,dos,mac
+    " 如遇Unicode值大于255的文本，不必等到空格再折行
+    " 合并两行中文时，不在中间加空格
+    " 在合适场合, 连接行时删除注视前导符
+    set formatoptions+=mMj
     " vim 自身命令行模式智能补全
     set wildmenu
+    " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+    set completeopt=longest,menu
     " 类似bash
     " set wildmode=list,longest
     " 类似zsh
     " set wildmode=full
     " 设置退格键工作方式
     set backspace=indent,start,eol
+    " 文件在外部被修改后自动读入
+    set autoread
 " }}}
 
 " 其他 {{{
     set splitright " Puts new vsplit windows to the right of the current
     set splitbelow " Puts new split windows to the bottom of the current
+    " 设置 退出vim后，内容显示在终端屏幕
+    " set t_ti= t_te=
+    " change the terminal's title
+    set title
+    " 在状态栏显示正在输入的命令
+    set showcmd
     " 禁止光标闪烁
     set gcr=a:block-blinkon0
+    " How many tenths of a second to blink when matching brackets
+    set matchtime=2
     " 禁止显示滚动条
     set guioptions-=l
     set guioptions-=L
@@ -517,8 +588,8 @@ filetype plugin indent on
     " 插入模式下用绝对行号, 普通模式下用相对行号
     augroup LineNums
         autocmd!
-        " autocmd FocusLost,InsertEnter * :call UseAbsNum()
-        " autocmd FocusGained,InsertLeave * :call UseRelNum()
+        autocmd FocusLost,InsertEnter * :call UseAbsNum()
+        autocmd FocusGained,InsertLeave * :call UseRelNum()
     augroup END
     " function
     function! UseAbsNum()
@@ -549,6 +620,13 @@ filetype plugin indent on
         " autocmd VimEnter,WinEnter,VimResized,InsertLeave * :let &scrolloff = float2nr(floor(winheight(0)/2)+1)
         " autocmd InsertEnter * :let &scrolloff = float2nr(floor(winheight(0)/2))
     augroup END
+
+    set pastetoggle=<F5>            "    when in insert mode, press <F5> to go to
+                                    "    paste mode, where you can paste mass data
+                                    "    that won't be autoindented
+
+    " disbale paste mode when leaving insert mode
+    au InsertLeave * set nopaste
 " }}}
 
 " 语法分析 {{{
@@ -558,9 +636,13 @@ filetype plugin indent on
     syntax on
     " 延缓终端刷新
     " set lazyredraw
-    " set ttyfast
+    set ttyfast
     set synmaxcol=120
     syntax sync minlines=256
+    " headers识别类型, 存在.c时为c, 存在.cpp时为cpp
+    if filereadable(expand('%:p<'))
+        let g:c_syntax_for_h=1
+    endif
     " autocmd BufEnter * :syn sync maxlines=512
 " }}}
 
@@ -575,6 +657,8 @@ filetype plugin indent on
     set shiftwidth=4
     " 让 vim 把连续数量的空格视为一个制表符
     set softtabstop=4
+    " 缩进时，取整 use multiple of shiftwidth when indenting with '<' and '>'
+    set shiftround
 " }}}
 
 " 代码折叠 {{{
@@ -582,8 +666,26 @@ filetype plugin indent on
     set foldmethod=indent
     " set foldmethod=syntax
     set foldlevel=128
+    " 代码折叠自定义快捷键 <leader>zz
+    let g:FoldMethod = 0
+    map <leader>zz :call ToggleFold()<cr>
+    fun! ToggleFold()
+        if g:FoldMethod == 0
+            exe "normal! zM"
+            let g:FoldMethod = 1
+        else
+            exe "normal! zR"
+            let g:FoldMethod = 0
+        endif
+    endfun
     " 启动 vim 时关闭折叠代码
     " set nofoldenable
+" }}}
+
+" rooter {{{
+    let g:rooter_change_directory_for_non_project_files = 'current'
+    let g:rooter_silent_chdir = 1
+    let g:rooter_resolve_links = 1
 " }}}
 
 " syntastic {{{
@@ -597,7 +699,7 @@ filetype plugin indent on
     let g:syntastic_check_on_wq=0
 
     let g:syntastic_enable_signs=1
-    let g:syntastic_cpp_include_dirs = ['/home/itcast/driver/mongo/include', '/home/itcast/driver/boost/include']
+    " let g:syntastic_cpp_include_dirs = ['/home/itcast/driver/mongo/include', '/home/itcast/driver/boost/include']
     let g:syntastic_cpp_check_header = 1
     let g:syntastic_cpp_remove_include_errors = 1
     " let g:syntastic_cpp_compiler = 'clang++'
@@ -605,6 +707,7 @@ filetype plugin indent on
 " }}}
 
 " YouCompleteMe {{{
+    " let g:ycm_server_python_interpreter = '/usr/bin/python2'
     " YCM 补全菜单配色
     " 菜单
     " highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
@@ -615,15 +718,18 @@ filetype plugin indent on
     " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
     let g:ycm_confirm_extra_conf=0
     " 开启 YCM 标签补全引擎
-    let g:ycm_collect_identifiers_from_tags_files=1
+    let g:ycm_collect_identifiers_from_tags_files=0
     "" 引入 C++ 标准库 tags
     " set tags+=~/.vim/tags/c
+    set tags=./tags;,./TAGS;
     set tags+=~/.vim/tags/systags
-    " set tags+=/usr/include/tags
+
     let g:ycm_semantic_triggers = {} 
     let g:ycm_semantic_triggers.c = ['->', '.']
     " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-    inoremap <leader>, <C-x><C-o>
+    " inoremap <leader>, <C-x><C-o>
+    " 修改对C函数的补全快捷键，默认是C-Space，修改为<Leader>,
+    let g:ycm_key_invoke_completion = '<Leader>,'
     " 补全内容不以分割子窗口形式出现，只显示补全列表
     set completeopt-=preview
     " 从第一个键入字符就开始罗列匹配项
@@ -651,9 +757,9 @@ filetype plugin indent on
     nnoremap <Leader>jd :call TracyoneGotoDef("")<cr>
     nnoremap <Leader>jc :call TracyoneGotoDef("vsp")<cr>
     " 添加gf跳转文件寻找路径
-    set path+=/usr/include/x86_64-linux-gnu
-    " set path+=~/driver/mongo/include
-    " set path+=~/driver/boost/include
+    " set path+=/usr/include/x86_64-linux-gnu
+    set path+=include;,inc;
+    " set path+=~/SourceBak/include/**4
 
     function! TracyoneGotoDef(open_type)
         let l:ycm_ret=s:YcmGotoDef(a:open_type)
@@ -734,11 +840,24 @@ filetype plugin indent on
 " }}}
 
 " easymotion {{{
+    let g:EasyMotion_do_mapping = 0
+    let g:EasyMotion_do_shade = 0
+    let g:EasyMotion_keys = 'ASDGHKLQWERTYUIOPZXCVBNMFJ;'
+    let g:EasyMotion_use_upper = 1
+    let g:EasyMotion_startofline = 0
     let g:EasyMotion_smartcase = 1
     let g:EasyMotion_use_smartsign_us = 1
+    " let g:EasyMotion_enter_jump_first = 1
+    let g:EasyMotion_space_jump_first = 1
+
     " Gif config
-    " map  / <Plug>(easymotion-sn)
-    " omap / <Plug>(easymotion-tn)
+    " nmap s <Plug>(easymotion-s2)
+    nmap s <Plug>(easymotion-bd-f2)
+    nmap S <Plug>(easymotion-bd-t2)
+    map <Leader>j <Plug>(easymotion-j)
+    map <Leader>k <Plug>(easymotion-k)
+    map  / <Plug>(easymotion-sn)
+    omap / <Plug>(easymotion-tn)
     " map  n <Plug>(easymotion-next)
     " map  N <Plug>(easymotion-prev)
 " }}}
@@ -865,7 +984,8 @@ filetype plugin indent on
 " }}}
 
 " nerdtree {{{
-    map <Leader>fl <plug>NERDTreeMirrorToggle<CR>
+    " map <Leader>fl <plug>NERDTreeMirrorToggle<CR>
+    map <Leader>fl :NERDTreeMirrorToggle<CR>
     " 设置 NERDTree 子窗口宽度
     let NERDTreeWinSize=25
     " display line number
@@ -900,7 +1020,8 @@ filetype plugin indent on
         let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
     endif
 
-    let g:CtrlSpaceDefaultMappingKey = "<C-P>"
+    " let g:CtrlSpaceDefaultMappingKey = "<C-P>"
+    " let g:CtrlSpaceDefaultMappingKey = "<C-Space>"
     let g:CtrlSpaceIgnoredFiles = '\v(\.git$|\.svn$|CVS$|\.o$|\.out$|\.swp$|\.vim$|\.so$|\.a$|\.class$|\.mo$|\.la$|\.obj$|\.jpg$|\.png$|\.xpm$|\.gif$|\.pyc$|^tags$|\.tags$|\.zip$|tmp[\/]|temp[\/]|Godeps[\/])'
     let g:CtrlSpaceSearchTiming = 200
 " }}}
@@ -937,7 +1058,7 @@ filetype plugin indent on
     set updatetime=100
     " gvim自动打开tagbar
     if g:isGUI
-        autocmd BufReadPost *.py,*.cpp,*.c,*.h,*.cc,*.cxx,*.hpp,*.lua call tagbar#autoopen()
+        " autocmd BufReadPost *.py,*.cpp,*.c,*.h,*.cc,*.cxx,*.hpp,*.lua call tagbar#autoopen()
     endif
     " 显示／隐藏标签列表子窗口
     nnoremap <Leader>tl :TagbarToggle<CR>
@@ -1041,59 +1162,56 @@ filetype plugin indent on
 " vimwiki {{{
     augroup VimWikiEdit
         autocmd!
-        autocmd BufNewFile,BufReadPost {*.wiki} set filetype=wiki
+        " autocmd BufNewFile,BufReadPost {*.wiki} set filetype=vimwiki
         " autocmd BufNewFile,BufReadPost,BufRead {*.md,,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-        autocmd FileType wiki nmap <C-r> <Plug>VimwikiRenumberAllLists
-        autocmd FileType wiki inoremap <C-J> <Esc>:VimwikiReturn 1 5<CR>
-        autocmd FileType wiki inoremap <leader><CR> <Esc>:VimwikiReturn 2 2<CR>
+        " autocmd FileType vimwiki nmap <C-r> <Plug>VimwikiRenumberAllLists
+        autocmd FileType vimwiki inoremap <C-J> <Esc>:VimwikiReturn 1 5<CR>
+        autocmd FileType vimwiki inoremap <leader><CR> <Esc>:VimwikiReturn 2 2<CR>
     augroup END
     " nmap <Leader>vw <Plug>VimwikiIndex
 
     " 取消驼峰英文成为维基词条
-    let g:vimwiki_camel_case = 0
+    " let g:vimwiki_camel_case = 0
     " 标记为完成的 checklist 项目会有特别的颜色
     let g:vimwiki_hl_cb_checked = 1
     let g:vimwiki_use_calendar = 1
     let g:vimwiki_html_header_numbering = 2
-    " let g:vimwiki_listsyms="01234"
     let g:vimwiki_list_ignore_newline = 0
+    let g:vimwiki_listsyms = '✗○◐●✓'
     " let g:vimwiki_h1_headers = 1
-    let automatic_nested_syntaxes = 0
+    let g:automatic_nested_syntaxes = 1
     let g:vimwiki_use_mouse = 1
     let g:vimwiki_toc_header = '导航'
-
-    " let vimwiki_html_path=$HOME.'VimWiki/HtmlSites/'
+    " let g:vimwiki_folding = 'list'
     let g:vimwiki_list = [
-        \{"path": "~/VimWiki/Default/",
-        \ "syntax": "markdown",
-        \ "ext": ".md",
-        \ "custom_wiki2html": "~/VimWiki/markdown.pl",
-        \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
-        \ "template_default": "default",
-        \ "template_ext": ".html",
-        \ "path_html": "~/VimWiki/HtmlSites/VimWiki/",  
-        \ "auto_toc": 0,
-        \ "auto_export": 0},
-        \{"path": "~/VimWiki/CppBook/",
-        \ "index": 'CppBook',
-        \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
-        \ "template_default": "default",
-        \ "template_ext": ".html",
-        \ "path_html": "~/VimWiki/HtmlSites/CppBook/",  
-        \ "auto_toc": 0,
-        \ "auto_export": 0},
-        \{"path": "~/VimWiki/Linux/",
-        \ "index": 'Linux',
-        \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
-        \ "template_default": "default",
-        \ "template_ext": ".html",
-        \ "path_html": "~/VimWiki/HtmlSites/Linux/",  
-        \ "auto_toc": 0,
-        \ "auto_export": 0}
-        \]
-        " \ "syntax": "markdown",
-        " \ "ext": ".md",
-        " \ "custom_wiki2html": "~/VimWiki/markdown.pl",
+                \{"path": "~/VimWiki/Default/",
+                \ "index": 'Note',
+                \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
+                \ "template_default": "default",
+                \ "template_ext": ".html",
+                \ "path_html": "~/VimWiki/HtmlSites/VimWiki/",  
+                \ "auto_toc": 0,
+                \ "auto_export": 0},
+                \{"path": "~/VimWiki/CppBook/",
+                \ "index": 'CppBook',
+                \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
+                \ "template_default": "default",
+                \ "template_ext": ".html",
+                \ "path_html": "~/VimWiki/HtmlSites/CppBook/",  
+                \ "auto_toc": 0,
+                \ "auto_export": 0},
+                \{"path": "~/VimWiki/Linux/",
+                \ "index": 'Linux',
+                \ "template_path": "~/VimWiki/HtmlSites/vimwiki-assets/",
+                \ "template_default": "default",
+                \ "template_ext": ".html",
+                \ "path_html": "~/VimWiki/HtmlSites/Linux/",  
+                \ "auto_toc": 0,
+                \ "auto_export": 0}
+                \]
+    " \ "syntax": "markdown",
+    " \ "ext": ".md",
+    " \ "custom_wiki2html": "~/VimWiki/markdown.pl",
     " let wiki_nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'c': 'c'}
     "
     " 在.wiki中refer了一个名为my.cpp的文件，会被默认扩展为my.cpp.html，这个选项告诉Vimwiki，对设置了的文件类型不进行扩展
@@ -1109,16 +1227,17 @@ filetype plugin indent on
     " 是否在计算字串长度时用特别考虑中文字符
     let g:vimwiki_CJK_length = 1
     let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1'
-" }}}
+    let g:vimwiki_html_header_numbering_sym = ')'
+    " }}}
 
-" vim-markdown {{{
+    " vim-markdown {{{
     let g:vim_markdown_folding_disabled = 1
     let g:vim_markdown_toc_autofit = 1
     let g:vim_markdown_new_list_item_indent = 4
     let g:vim_markdown_conceal = 0
-" }}}
+    " }}}
 
-" markdown-preview {{{
+    " markdown-preview {{{
     let g:mkdp_path_to_chrome = "firefox"
     let g:mkdp_auto_start = 0
     let g:mkdp_auto_close = 0
@@ -1144,6 +1263,11 @@ filetype plugin indent on
     " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
     let g:indexer_ctagsCommandLineOptions="--c++-kinds=+l+p+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
     let g:indexer_indexerListFilename="~/.vim/.indexer_files"
+
+    let g:indexer_dontUpdateTagsIfFileExists=1
+
+    let g:indexer_ctagsJustAppendTagsAtFileSave=1
+    let g:indexer_useSedWhenAppend=1
     let g:indexer_disableCtagsWarning=1
 " }}}
 
@@ -1202,7 +1326,7 @@ filetype plugin indent on
     augroup END
 " }}}
 
-" Todolist {{{
+" tasklist {{{
     map <leader>td <Plug>TaskList
     let g:tlTokenList = ["FIXME", "TODO", "HACK", "NOTE", "WARN", "MODIFY"]
 " }}}
@@ -1239,8 +1363,8 @@ filetype plugin indent on
     let g:DoxygenToolkit_versionTag = "@Version: "
     let g:DoxygenToolkit_blockTag = "@Name: "
     let g:DoxygenToolkit_classTag = "@Class: "
-    let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------"
-    let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------------"
+    " let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------"
+    " let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------------"
 " }}}
 
 " limelight and goyo {{{
@@ -1274,11 +1398,16 @@ filetype plugin indent on
 
 " quick-scope {{{
     let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+    let g:qs_max_chars = 100
+    let g:qs_first_occurrence_highlight_color = 15
+    let g:qs_first_occurrence_highlight_bgcolor = 28
+    let g:qs_first_occurrence_highlight_color = 15
+    let g:qs_second_occurrence_highlight_bgcolor = 205
 " }}}
 
 " vim-hugefile {{{
-    " let g:hugefile_trigger_size = 0.5
-    " let g:LargeFile=50
+" let g:hugefile_trigger_size = 0.5
+" let g:LargeFile=50
 " }}}
 
 " AsyncRun {{{
@@ -1287,29 +1416,29 @@ filetype plugin indent on
     let g:asyncrun_trim = 1
     let g:asyncrun_bell = 1
     let g:asyncrun_auto = 1
-    " augroup vimrc
+    " augroup AsyncRun
         " autocmd QuickFixCmdPost * botright copen 12
     " augroup END
 " }}}
 
 " vim-clang-format {{{
     " your favorite style options
-           " \ "BreakBeforeBraces" : "Stroustrup",
-           " \ "AlwaysBreakTemplateDeclarations" : "true",
-           " \ "AllowShortIfStatementsOnASingleLine" : "true",
+    " \ "BreakBeforeBraces" : "Stroustrup",
+    " \ "AlwaysBreakTemplateDeclarations" : "true",
+    " \ "AllowShortIfStatementsOnASingleLine" : "true",
 
     let g:clang_format#style_options = {
-            \ "AccessModifierOffset" : -4,
-            \ }
+                \ "AccessModifierOffset" : -4,
+                \ }
     " Your filetype specific options
     let g:clang_format#filetype_style_options = {
-            \   'cpp' : {"Standard" : "C++11"},
-            \ }
+                \   'cpp' : {"Standard" : "C++11"},
+                \ }
     " map to <Leader>cf in C++ code
     augroup ClangFormat
         autocmd!
-        autocmd FileType c,cpp,cc,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-        autocmd FileType c,cpp,cc,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+        autocmd FileType c,cpp,hpp,cc,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+        autocmd FileType c,cpp,hpp,cc,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
     augroup END
     " autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :ClangFormat<CR>
     " if you install vim-operator-user
@@ -1408,10 +1537,10 @@ filetype plugin indent on
 
         " Define dictionary.
         let g:neocomplete#sources#dictionary#dictionaries = {
-            \ 'default' : '',
-            \ 'vimshell' : $HOME.'/.vimshell_hist',
-            \ 'scheme' : $HOME.'/.gosh_completions'
-                \ }
+                    \ 'default' : '',
+                    \ 'vimshell' : $HOME.'/.vimshell_hist',
+                    \ 'scheme' : $HOME.'/.gosh_completions'
+                    \ }
 
         " Define keyword.
         if !exists('g:neocomplete#keyword_patterns')
@@ -1427,16 +1556,16 @@ filetype plugin indent on
         " <CR>: close popup and save indent.
         " inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
         " function! s:my_cr_function()
-          " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-          " " For no inserting <CR> key.
-          " "return pumvisible() ? "\<C-y>" : "\<CR>"
+        " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+        " " For no inserting <CR> key.
+        " "return pumvisible() ? "\<C-y>" : "\<CR>"
         " endfunction
         " <TAB>: completion.
         " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
         " inoremap <expr><Tab>
-                    " \ neocomplete#complete_common_string() != '' ?
-                    " \   neocomplete#complete_common_string() :
-                    " \ pumvisible() ? "\<C-n>" : "\<Tab>"
+        " \ neocomplete#complete_common_string() != '' ?
+        " \   neocomplete#complete_common_string() :
+        " \ pumvisible() ? "\<C-n>" : "\<Tab>"
         " <C-h>, <BS>: close popup and delete backword char.
         inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
         inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
@@ -1455,7 +1584,7 @@ filetype plugin indent on
 
         " Enable heavy omni completion.
         if !exists('g:neocomplete#sources#omni#input_patterns')
-          let g:neocomplete#sources#omni#input_patterns = {}
+            let g:neocomplete#sources#omni#input_patterns = {}
         endif
         " let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
         " let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -1481,23 +1610,133 @@ filetype plugin indent on
 
         " For conceal markers.
         if has('conceal')
-          set conceallevel=2 concealcursor=niv
+            set conceallevel=2 concealcursor=niv
         endif
     endif
 " }}}
 
-" TODO {{{
+" easytags {{{
+    " 关闭easytags的自动语法高亮，其他的插件已经提供了较好的高亮，不需要。
+    let b:easytags_auto_highlight=0
+    " 如果你想打开自动语法高亮，在对应的文件中输入
+    " :autocmd FileType python let b:easytags_auto_highlight=0 
+    " 设置easytags 更新tags为异步模式
+    let g:easytags_async=1
+    let g:easytags_python_enabled = 1
+    " 仅限于保存的时候才生成tags
+    let g:easytags_events=['BufWritePost']
+    " 生成tags的层次，也即需要你在项目根目录下先
+    " ctags ./一个tags文件，然后就可以自由使用了。
+    let g:easytags_dynamic_files=1
+    let g:easytags_file = '~/.vim/easytags/vimtags'
+    let g:easytags_by_filetype = '~/.vim/easytags/'
+    let g:easytags_opts = ['--fields=+l']
+    " 在Project的主目录下创建tags
+    " set cpoptions+=d
+" }}}
+
+" github_dashboard {{{
+    let g:github_dashboard = { 'username': 'lclrc', 'password': $GITHUB_TOKEN }
+    " Dashboard window position
+    " - Options: tab, top, bottom, above, below, left, right
+    " - Default: tab
+    " let g:github_dashboard['position'] = 'top'
+
+    " Disable Emoji output
+    " - Default: only enable on terminal Vim on Mac
+    let g:github_dashboard['emoji'] = 0
+
+    " Customize emoji (see http://www.emoji-cheat-sheet.com/)
+    let g:github_dashboard['emoji_map'] = {
+    \   'user_dashboard': 'blush',
+    \   'user_activity':  'smile',
+    \   'repo_activity':  'laughing',
+    \   'ForkEvent':      'fork_and_knife'
+    \ }
+
+    " Command to open link URLs
+    " - Default: auto-detect
+    " let g:github_dashboard['open_command'] = 'open'
+
+    " API timeout in seconds
+    " - Default: 10, 20
+    let g:github_dashboard['api_open_timeout'] = 10
+    let g:github_dashboard['api_read_timeout'] = 20
+
+    " Do not set statusline
+    " - Then you can customize your own statusline with github_dashboard#status()
+    let g:github_dashboard['statusline'] = 0
+
+    " GitHub Enterprise
+    " let g:github_dashboard['api_endpoint'] = 'http://github.mycorp.com/api/v3'
+    " let g:github_dashboard['web_endpoint'] = 'http://github.mycorp.com'
+" }}}
+
+" targets {{{
+    let g:targets_argTrigger = ','
+    " let g:targets_aiAI = 'aIAi'
+    let g:targets_quotes = '"d '' `'
+    let g:targets_jumpRanges = 'rr rb rB bb bB BB ll al Al aa Aa AA'
 
 " }}}
 
-" TODO {{{
-
+" a.vim {{{
+    let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc,sfr:./include,sfr:./inc'
+    let g:alternateRelativeFiles = 1
 " }}}
 
-" TODO {{{
+" cscope {{{
+    nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+    nnoremap <leader>ll :call ToggleLocationList()<CR>
 
+    " " s: Find this C symbol
+    " nnoremap  <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+    " " g: Find this definition
+    " nnoremap  <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+    " " d: Find functions called by this function
+    " nnoremap  <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+    " " c: Find functions calling this function
+    " nnoremap  <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+    " " t: Find this text string
+    " nnoremap  <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+    " " e: Find this egrep pattern
+    " nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+    " " f: Find this file
+    " nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+    " " i: Find files #including this file
+    " nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
 " }}}
 
-" TODO {{{
+" python-mode {{{
+    " Override go-to.definition key shortcut to Ctrl-]
+    let g:pymode_rope_goto_definition_bind = "<C-]>"
+    " Override run current python file key shortcut to Ctrl-Shift-e
+    let g:pymode_run_bind = "<C-S-e>"
+    let g:pymode_lint_on_fly = 1
+    let g:pymode_lint_cwindow = 0
+    let g:pymode_rope_completion = 0
+    " let g:pymode_rope_autoimport=1
+    " let g:pymode_rope_autoimport_import_after_complete = 1
+" }}}
 
+" rainbow_parentheses {{{
+    let g:rbpt_colorpairs = [
+        \ ['brown',       'RoyalBlue3'],
+        \ ['Darkblue',    'SeaGreen3'],
+        \ ['darkgray',    'DarkOrchid3'],
+        \ ['darkgreen',   'firebrick3'],
+        \ ['darkcyan',    'RoyalBlue3'],
+        \ ['darkred',     'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['brown',       'firebrick3'],
+        \ ['gray',        'RoyalBlue3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['Darkblue',    'firebrick3'],
+        \ ['darkgreen',   'RoyalBlue3'],
+        \ ['darkcyan',    'SeaGreen3'],
+        \ ['darkred',     'DarkOrchid3'],
+        \ ['red',         'firebrick3'],
+        \ ]
+    " au VimEnter * RainbowParenthesesToggle
+    " au Syntax * RainbowParenthesesLoadBraces
 " }}}

@@ -16,11 +16,10 @@ BASE_FLAGS = [
     #  '-xc++',
     '-std=gnu99',
     '-xc',
-    '-I/usr/lib/',
     '-I/usr/include/',
-    '-I/usr/include/x86_64-linux-gnu/',
+    #  '-I/usr/include/x86_64-linux-gnu/',
     '-I/usr/local/include',
-    '-I/usr/include/c++/5',
+    '-I/usr/include/c++/6.3.1',
 ]
 
 SOURCE_EXTENSIONS = [
@@ -116,13 +115,17 @@ def flags_for_include(root):
     try:
         include_path = find_nearest(root, 'include')
         flags = []
-        for dirroot, dirnames, filenames in os.walk(include_path):
+        # PATH/include
+        include_parpath = os.path.join(include_path, "../")
+        # include_parpath = include_path
+        # flags = flags + ["-I" + include_path]
+        for dirroot, dirnames, filenames in os.walk(include_parpath):
             for dir_path in dirnames:
-                real_path = os.path.join(dirroot, dir_path)
-                # PATH/include/xxx
-                flags = flags + ["-I" + real_path]
-                # PATH/include
-                flags = flags + ["-I" + include_path]
+                #  if any("*.h" or "*.hpp" in filenames):
+                    real_path = os.path.join(dirroot, dir_path)
+                    # PATH/include/xxx
+                    flags = flags + ["-I" + real_path]
+                    #  flags = flags + ["-I" + dirroot]
         return flags
     except:
         return None
